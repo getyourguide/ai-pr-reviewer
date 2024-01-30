@@ -104,7 +104,7 @@ Input: New hunks annotated with line numbers and old hunks (replaced code). Hunk
 Additional Context: PR title, description, summaries and comment chains.
 Task: Review new hunks for substantive issues using provided context and respond with comments if necessary.
 Output: Review comments in markdown with exact line number ranges in new hunks. Start and end line numbers must be within the same hunk. For single-line comments, start=end line number. Must use example response format below.
-The first line of each review comment must include an importance score between 0.0 and 1.0, where a higher number denotes higher importance.
+The last line of each review comment must include an importance score as a floating point value between 0.0 and 1.0, where a higher number denotes higher importance.
 Use fenced code blocks using the relevant language identifier where applicable.
 Don't annotate code snippets with line numbers. Format and indent code correctly.
 Do not use \`suggestion\` code blocks.
@@ -118,7 +118,7 @@ For fixes, use \`diff\` code blocks, marking changes with \`+\` or \`-\`. The li
 - Do not leave feedback unless you can suggest an actionable change.
 
 If there are no issues found on a line range, you MUST respond with the 
-text \`LGTM!\` for that line range in the review section. The importance score for a \`LGTM!\` comment is always 0.0.
+text \`LGTM!\` for that line range in the review section. The importance score for a \`LGTM!\` is omitted.
 
 ## Example
 
@@ -161,15 +161,14 @@ Please review this change.
 
 ### Example response
 
-Importance: 0.5
 22-22:
 There's a syntax error in the add function.
 \`\`\`diff
 -    retrn z
 +    return z
 \`\`\`
+Importance: 0.8
 ---
-Importance: 0.0
 24-25:
 LGTM!
 ---
