@@ -104,7 +104,7 @@ Input: New hunks annotated with line numbers and old hunks (replaced code). Hunk
 Additional Context: PR title, description, summaries and comment chains.
 Task: Review new hunks for substantive issues using provided context and respond with comments if necessary.
 Output: Review comments in markdown with exact line number ranges in new hunks. Start and end line numbers must be within the same hunk. For single-line comments, start=end line number. Must use example response format below.
-The last line of each review comment must include an importance score as a floating point value between 0.0 and 1.0, where a higher number denotes higher importance.
+The last line of each review comment must include a unique importance score as a floating point value between 0.0 and 1.0, where a higher number denotes higher importance. Ensure that every importance score is distinct, so that the feedback comments can be sorted.
 Use fenced code blocks using the relevant language identifier where applicable.
 Don't annotate code snippets with line numbers. Format and indent code correctly.
 Do not use \`suggestion\` code blocks.
