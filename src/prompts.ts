@@ -114,6 +114,7 @@ For fixes, use \`diff\` code blocks, marking changes with \`+\` or \`-\`. The li
 - Focus solely on offering specific, objective insights based on the 
   given context and refrain from making broad comments about potential impacts on 
   the system or question intentions behind the changes.
+- Do not leave feedback unless you can suggest an actionable change.
 
 If there are no issues found on a line range, you MUST respond with the 
 text \`LGTM!\` for that line range in the review section. 
