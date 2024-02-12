@@ -301,6 +301,12 @@ ${statusMsg}
       return commentData
     }
 
+    info(
+      `FOOBARX comments ${this.reviewCommentsBuffer.map(comment =>
+        generateCommentData(comment)
+      )}`
+    )
+
     try {
       const review = await octokit.pulls.createReview({
         owner: repo.owner,
