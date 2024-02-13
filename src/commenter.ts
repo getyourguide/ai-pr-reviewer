@@ -301,10 +301,46 @@ ${statusMsg}
       return commentData
     }
 
+    const importanceScores = this.reviewCommentsBuffer.map(comment => {
+      // Write a regex to match the comment.message for a line starting with "Importance: ", that extracts the floating point score that follows.
+      const match = comment.message.match(/Importance: (\d+(\.\d+)?)/)
+
+      // Extract the importance score
+      if (match) {
+        comment.message = comment.message.replace(match[0], '')
+        return isNaN(parseFloat(match[1])) ? null : parseFloat(match[1])
+      } else {
+        return null
+      }
+    })
+
+    info(`Found importance scores: ${importanceScores}`)
+
+    const importanceScoresFiltered = importanceScores.filter(
+      score => score !== null
+    )
+    const median =
+      importanceScoresFiltered.sort()?.[
+        Math.floor(importanceScoresFiltered.length / 2)
+      ] ?? null
+
+    if (median === null) {
+      info(`WARNING: No importance scores found in comments`)
+    }
+
     info(
-      `FOOBARX comments ${this.reviewCommentsBuffer.map(comment =>
-        generateCommentData(comment)
-      )}`
+      `Number of comments before importance pruning: ${this.reviewCommentsBuffer.length}`
+    )
+
+    const reviewCommentsPruned = this.reviewCommentsBuffer.filter(
+      (_, index) => {
+        const score = importanceScores[index]
+        return score !== null && median !== null && score >= median
+      }
+    )
+
+    info(
+      `Number of comments after importance pruning: ${reviewCommentsPruned.length}`
     )
 
     try {
@@ -315,13 +351,13 @@ ${statusMsg}
         pull_number: pullNumber,
         // eslint-disable-next-line camelcase
         commit_id: commitId,
-        comments: this.reviewCommentsBuffer.map(comment =>
+        comments: reviewCommentsPruned.map(comment =>
           generateCommentData(comment)
         )
       })
 
       info(
-        `Submitting review for PR #${pullNumber}, total comments: ${this.reviewCommentsBuffer.length}, review id: ${review.data.id}`
+        `Submitting review for PR #${pullNumber}, total comments: ${reviewCommentsPruned.length}, review id: ${review.data.id}`
       )
 
       await octokit.pulls.submitReview({
@@ -340,7 +376,7 @@ ${statusMsg}
       )
       await this.deletePendingReview(pullNumber)
       let commentCounter = 0
-      for (const comment of this.reviewCommentsBuffer) {
+      for (const comment of reviewCommentsPruned) {
         info(
           `Creating new review comment for ${comment.path}:${comment.startLine}-${comment.endLine}: ${comment.message}`
         )
@@ -361,9 +397,7 @@ ${statusMsg}
         }
 
         commentCounter++
-        info(
-          `Comment ${commentCounter}/${this.reviewCommentsBuffer.length} posted`
-        )
+        info(`Comment ${commentCounter}/${reviewCommentsPruned.length} posted`)
       }
     }
   }
