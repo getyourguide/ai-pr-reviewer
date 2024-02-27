@@ -63,8 +63,9 @@ export const codeReview = async (
     return
   }
 
-  // as gpt-3.5-turbo isn't paying attention to system message, add to inputs for now
-  inputs.systemMessage = options.systemMessage
+  // Commented out as we don't use gpt-3.5-turbo
+  // // as gpt-3.5-turbo isn't paying attention to system message, add to inputs for now
+  // inputs.systemMessage = options.systemMessage
 
   // get SUMMARIZE_TAG message
   const existingSummarizeCmt = await commenter.findCommentWithTag(
