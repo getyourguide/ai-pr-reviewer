@@ -17,11 +17,12 @@ export class TokenLimits {
       this.responseTokens = 2000
     } else if (
       model === 'gpt-4-turbo-preview' ||
-      model === 'gpt-4-0125-preview'
+      model === 'gpt-4-0125-preview' ||
+      model === 'gpt-4o'
     ) {
       this.maxTokens = 128000
-      this.responseTokens = 4096
-      this.knowledgeCutOff = '2023-04-01'
+      this.responseTokens = 12000
+      this.knowledgeCutOff = '2023-12-01'
     } else {
       this.maxTokens = 4000
       this.responseTokens = 1000
