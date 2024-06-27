@@ -21,7 +21,7 @@ export class TokenLimits {
       model === 'gpt-4o'
     ) {
       this.maxTokens = 128000
-      this.responseTokens = 12000
+      this.responseTokens = 4096
       this.knowledgeCutOff = '2023-12-01'
     } else {
       this.maxTokens = 4000
