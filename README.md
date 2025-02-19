@@ -206,13 +206,13 @@ appreciated.
 Install the dependencies
 
 ```bash
-$ npm install
+$ pnpm install
 ```
 
 Build the typescript and package it for distribution
 
 ```bash
-$ npm run build && npm run package
+$ pnpm run build && pnpm run package
 ```
 
 ## FAQs
